@@ -106,7 +106,7 @@ public class ESStatement implements Statement {
 			return updateState.execute(sql, (CreateView)statement, connection.getSchema());
 		}else if(statement instanceof Use){
 			connection.setSchema( ((Use)statement).getSchema());
-			connection.getTypeMap(); // updates the type mappings found in properties
+			//connection.getTypeMap(); // updates the type mappings found in properties
 			return 0;
 		}else if(statement instanceof DropTable){
 			return updateState.execute(sql, (DropTable)statement);
@@ -187,7 +187,7 @@ public class ESStatement implements Statement {
 		if(sqlNorm.startsWith("select") || sqlNorm.startsWith("explain")) {
 			this.result = this.executeQuery(sql);
 			return result != null;
-		}else if(sqlNorm.startsWith("insert") || sqlNorm.startsWith("delete")
+		}else if(sqlNorm.startsWith("insert") || sqlNorm.startsWith("delete") || sqlNorm.startsWith("update")
 				|| sqlNorm.startsWith("create") || sqlNorm.startsWith("use") ||
 				sqlNorm.startsWith("drop")) {
 			this.executeUpdate(sql);
