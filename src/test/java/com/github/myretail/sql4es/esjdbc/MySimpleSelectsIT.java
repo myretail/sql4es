@@ -1,5 +1,6 @@
-package nl.anchormen.esjdbc;
+package com.github.myretail.sql4es.esjdbc;
 
+import nl.anchormen.esjdbc.Sql4EsBase;
 import nl.anchormen.sql4es.model.Utils;
 import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
 import org.elasticsearch.test.ESIntegTestCase.Scope;

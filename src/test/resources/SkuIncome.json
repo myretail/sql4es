@@ -1,0 +1,117 @@
+//index： item_sku_income
+//type：sku_income
+{
+  "settings": {
+    "number_of_shards": 24
+  },
+  "mappings": {
+    "sku_income": {
+      "_ttl": {
+        "enabled": "false"
+      },
+      "_timestamp": {
+        "enabled": "true"
+      },
+      "_all": {
+        "enabled": "false"
+      },
+      "properties": {
+        "item_first_cate_cd": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "item_first_cate_name": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "item_second_cate_cd": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "item_second_cate_name": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "item_third_cate_cd": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+
+
+        "item_third_cate_name": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "brand_code": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "brandname_full": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "item_sku_id": {
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "item_sku_name": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+
+
+        "dept_id_1": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "dept_id_2": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "dept_id_3": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "dept_id": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "saler_erp_acct": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+
+
+        "saler_erp_acct_new": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "saler_erp_acct_new2": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "sale_staf_name": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "sale_amount": {
+          "type": "double",
+          "index": "not_analyzed"
+        },
+        "date_period": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "week_period": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "month_period": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+
+      }
+    }
+  }
+}
