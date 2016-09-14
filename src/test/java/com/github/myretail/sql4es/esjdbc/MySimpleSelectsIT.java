@@ -36,8 +36,12 @@ public class MySimpleSelectsIT  {
 	@Test
 	public void selectAll() throws Exception{
 
-		String sql ="select sum(sale_amount) as sale_amount, item_second_cate_name, item_third_cate_name from sku_income group by item_second_cate_name, item_third_cate_name";
+		String sql ="select sum(sale_amount)/sum(dept_id_1) as sale_amount, item_second_cate_name, item_third_cate_name" +
+				" from sku_income , query_cache group by item_second_cate_name, item_third_cate_name";
 
+        sql ="select sum(sale_amount) as sale_amount, item_second_cate_name, item_third_cate_name " +
+                "from (select sale_amount, item_second_cate_name, item_third_cate_name from  sku_income where item_second_cate_name='大 家 电') as sku_income " +
+                "group by item_second_cate_name, item_third_cate_name";
 //		sql="select * from "+type+" limit 5";
 
 		Statement st = DriverManager.getConnection("jdbc:sql4es://es.test.standino.com:9303/"+index+"?cluster.name=jiesi-1").createStatement();
