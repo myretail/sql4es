@@ -219,7 +219,7 @@ public class ESUpdateState {
 				fieldValues = new HashMap<String, Object>();
 			}
 			rs.close();
-			rs = queryState.moreResutls(false);
+			rs = queryState.moreResults(false);
 		}
 		if(indexReqs.size() > 0) indexCount += this.execute(indexReqs, maxRequestsPerBulk);
 		return indexCount;
@@ -437,7 +437,7 @@ public class ESUpdateState {
 				}
 			}
 			rs.close();
-			rs = queryState.moreResutls(true);
+			rs = queryState.moreResults(true);
 		}
 		if(requests.size() > 0) deleteCount = this.execute(requests, maxRequestsPerBulk);
 		return deleteCount;
@@ -487,7 +487,7 @@ public class ESUpdateState {
 			if(i<fields.size()-1) sb.append(", ");
 		}
 		sb.append("}}"); // close type and properties blocks
-		String json = sb.toString().replaceAll("([\\[|{|,|:]\\s)*(\\w+|\\*)(\\s*[\\]|}|:|,])", "$1\"$2\"$3");
+		String json = sb.toString().replaceAll("([\\[|{|,|:]\\s)*([\\w|\\-|\\*]+)(\\s*[\\]|}|:|,])", "$1\"$2\"$3");
 		
 		// create index if it does not yet exist
 		boolean indexExists = client.admin().indices().exists(new IndicesExistsRequest(index)).actionGet().isExists();
@@ -697,7 +697,7 @@ public class ESUpdateState {
 					}
 				}
 				rs.close();
-				rs = queryState.moreResutls(true);
+				rs = queryState.moreResults(true);
 			}
 			if(indexReqs.size() > 0)  updateCount += this.execute(indexReqs, maxRequestsPerBulk);
 			return updateCount;

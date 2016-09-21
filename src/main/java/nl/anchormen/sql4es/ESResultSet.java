@@ -360,7 +360,7 @@ public class ESResultSet implements ResultSet {
 		if(type == Types.DATE){
 			if(value instanceof String) return new Time(getTimeFromString((String)value));
 			return new Time(((java.util.Date)value).getTime());
-		}else throw new SQLException("Value in column '"+columnIndex+"' is not a Date but is "+value.getClass().getSimpleName());
+		}else throw new SQLException("Value in column '"+columnIndex+"' is not a Time but is "+value.getClass().getSimpleName());
 	}
 
 	@Override
@@ -371,7 +371,7 @@ public class ESResultSet implements ResultSet {
 		if(type == Types.DATE){
 			if(value instanceof String) return new Timestamp(getTimeFromString((String)value));
 			return new Timestamp(((java.util.Date)value).getTime());
-		}else throw new SQLException("Value in column '"+columnIndex+"' is not a date but is "+value.getClass().getSimpleName());
+		}else throw new SQLException("Value in column '"+columnIndex+"' is not a Timestamp but is "+value.getClass().getSimpleName());
 	}
 
 	@Override
@@ -981,38 +981,39 @@ public class ESResultSet implements ResultSet {
 
 	@Override
 	public Date getDate(int columnIndex, Calendar cal) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO use provided calander (is that needed with ES?)
+		return getDate(columnIndex);
 	}
 
 	@Override
 	public Date getDate(String columnLabel, Calendar cal) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO use provided calander (is that needed with ES?)
+		return getDate(columnLabel);
+
 	}
 
 	@Override
 	public Time getTime(int columnIndex, Calendar cal) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO use provided calander (is that needed with ES?)
+		return getTime(columnIndex);
 	}
 
 	@Override
 	public Time getTime(String columnLabel, Calendar cal) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO use provided calander (is that needed with ES?)
+		return getTime(columnLabel);
 	}
 
 	@Override
 	public Timestamp getTimestamp(int columnIndex, Calendar cal) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO use provided calander (is that needed with ES?)
+		return getTimestamp(columnIndex);
 	}
 
 	@Override
 	public Timestamp getTimestamp(String columnLabel, Calendar cal) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO use provided calander (is that needed with ES?)
+		return getTimestamp(columnLabel);
 	}
 
 	@Override
@@ -1376,7 +1377,7 @@ public class ESResultSet implements ResultSet {
 		
 	}
 
-	public ESResultSet setOffset(int offset) {
+	public ESResultSet setOffset(long offset) {
 		this.offset = offset;
 		return this;
 	}

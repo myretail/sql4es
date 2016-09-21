@@ -50,7 +50,7 @@ public class ESQueryState{
 	private final SearchAggregationParser aggParser = new SearchAggregationParser();
 	
 	// state definition
-	private int maxRows = -1;
+	private int maxRows = Integer.MAX_VALUE;
 	private SearchRequestBuilder request;
 	private ESResultSet result = null;
 	private SearchResponse esResponse;
@@ -135,12 +135,18 @@ public class ESQueryState{
 		// add limit and determine to use scroll
 		if(info.getAggregation() != null) {
 			req = req.setSize(0);
-		} else if(limit > 0 && limit < fetchSize){
-			req.setSize(limit);
-		} else if (info.getSorts().isEmpty()){ // scrolling does not work well with sort
-			req.setSize(fetchSize); 
-			req.addSort("_doc", SortOrder.ASC);
-			req.setScroll(new TimeValue(Utils.getIntProp(props, Utils.PROP_SCROLL_TIMEOUT_SEC, 60)*1000));
+		} else{
+			if(limit > 0 && limit < fetchSize){
+				req.setSize(limit);
+			} else if (Utils.getBooleanProp(props, "results.split", false)){
+				req.setSize(fetchSize);
+				req.setScroll(new TimeValue(Utils.getIntProp(props, Utils.PROP_SCROLL_TIMEOUT_SEC, 60)*1000));
+				if (info.getSorts().isEmpty()) req.addSort("_doc", SortOrder.ASC); // scroll works fast with sort on _doc
+			}else{
+				req.setSize(limit);
+				req.setScroll(new TimeValue(Utils.getIntProp(props, Utils.PROP_SCROLL_TIMEOUT_SEC, 60)*1000));
+				if (info.getSorts().isEmpty()) req.addSort("_doc", SortOrder.ASC); // scroll works fast with sort on _doc
+			}
 		}
 		
 		// use query cache when this was indicated in FROM clause
@@ -227,7 +233,7 @@ public class ESQueryState{
 		}
 	}
 	
-	public ResultSet moreResutls(boolean useLateral) throws SQLException {
+	public ResultSet moreResults(boolean useLateral) throws SQLException {
 		if(result != null && result.getOffset() + result.getNrRows() >= result.getTotal()) return null;
 		if(result != null) result.close();
 		if(esResponse.getScrollId() != null ){
@@ -235,6 +241,7 @@ public class ESQueryState{
 					.setScroll(new TimeValue(Utils.getIntProp(props, Utils.PROP_SCROLL_TIMEOUT_SEC, 60)*1000))
 					.execute().actionGet();
 			ESResultSet rs = convertResponse(useLateral);
+			rs.setOffset(result.getOffset() + result.getNrRows());
 			if(rs.getNrRows() == 0) return null;
 			result = rs;
 			return result;
@@ -261,7 +268,7 @@ public class ESQueryState{
 	 * Allows to set a limit other than using LIMIT in the SQL
 	 */
 	public void setMaxRows(int size){
-		this.maxRows = size;
+		if(size > 0) this.maxRows = size;
 	}
 	
 	public int getMaxRows(){
@@ -279,8 +286,7 @@ public class ESQueryState{
 	 * @return
 	 */
 	public int determineLimit(int limit){
-		if(limit <= -1 ) return this.maxRows;
-		if(maxRows <= -1) return limit;
+		if(limit == -1) return maxRows;
 		return Math.min(limit, maxRows);
 	}
 	
