@@ -36,6 +36,29 @@ public class MySimpleSelectsIT  {
 		}
 	}
 
+	@Test
+
+	public void limitTest() throws SQLException {
+		String sql = "select  item_third_cate_cd, item_third_cate_name" +
+				" from sku_income  limit  20000";
+
+		Statement st = DriverManager.getConnection("jdbc:sql4es://es.test.standino.com:9303/"+index+"?cluster.name=jiesi-1").createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		ResultSetMetaData rsm = rs.getMetaData();
+
+
+
+		int count = 0;
+		while(rs.next()){
+			count++;
+//			System.out.print(rs.getObject("dept_id_2")+"----"+rs.getObject("dept_id_3")+":  ");
+//			System.out.println(formatMeasure(rs.getDouble("sale_amount"),"0.##"));
+
+		}
+
+			System.out.println("记录数："+count);
+	}
+
 
 
 	@Test
