@@ -106,7 +106,7 @@ public class ESStatement implements Statement {
 			return updateState.execute(sql, (CreateView)statement, connection.getSchema());
 		}else if(statement instanceof Use){
 			connection.setSchema( ((Use)statement).getSchema());
-			connection.getTypeMap(); // updates the type mappings found in properties
+			//connection.getTypeMap(); // updates the type mappings found in properties
 			return 0;
 		}else if(statement instanceof DropTable){
 			return updateState.execute(sql, (DropTable)statement);
@@ -187,7 +187,7 @@ public class ESStatement implements Statement {
 		if(sqlNorm.startsWith("select") || sqlNorm.startsWith("explain")) {
 			this.result = this.executeQuery(sql);
 			return result != null;
-		}else if(sqlNorm.startsWith("insert") || sqlNorm.startsWith("delete")
+		}else if(sqlNorm.startsWith("insert") || sqlNorm.startsWith("delete") || sqlNorm.startsWith("update")
 				|| sqlNorm.startsWith("create") || sqlNorm.startsWith("use") ||
 				sqlNorm.startsWith("drop")) {
 			this.executeUpdate(sql);
@@ -207,7 +207,7 @@ public class ESStatement implements Statement {
 
 	@Override
 	public boolean getMoreResults() throws SQLException {
-		this.result = queryState.moreResutls(Utils.getBooleanProp(this.connection.getClientInfo(), Utils.PROP_RESULT_NESTED_LATERAL, true));
+		this.result = queryState.moreResults(Utils.getBooleanProp(this.connection.getClientInfo(), Utils.PROP_RESULT_NESTED_LATERAL, true));
 		return result != null;
 	}
 
@@ -265,7 +265,7 @@ public class ESStatement implements Statement {
 	@Override
 	public boolean getMoreResults(int current) throws SQLException {
 		// TODO use current param
-		ResultSet newResult = queryState.moreResutls(Utils.getBooleanProp(this.connection.getClientInfo(), Utils.PROP_RESULT_NESTED_LATERAL, true));
+		ResultSet newResult = queryState.moreResults(Utils.getBooleanProp(this.connection.getClientInfo(), Utils.PROP_RESULT_NESTED_LATERAL, true));
 		if(newResult == null) return false;
 		this.result = newResult;
 		return true;

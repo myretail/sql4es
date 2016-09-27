@@ -1,6 +1,10 @@
 #mac
 .DS_Store
 
+#intelliJ
+.idea
+*.iml
+
 #Eclipse
 .metadata
 bin/
@@ -39,3 +43,6 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 /notes.txt
+/.idea/
+/sql4es.iml
+/classes/

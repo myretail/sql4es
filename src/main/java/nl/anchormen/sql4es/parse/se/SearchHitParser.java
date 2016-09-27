@@ -40,10 +40,16 @@ public class SearchHitParser {
 	 * @param rs
 	 * @throws SQLException 
 	 */
-	public ESResultSet parse(SearchHits hits, Heading head, long total, int rowLength, boolean useLateral, long offset) throws SQLException{
+	public ESResultSet parse(SearchHits hits, Heading head, long total, int rowLength, boolean useLateral, long offset, ESResultSet previous) throws SQLException{
 		Map<String, Heading> headMap = buildHeaders(head);
-		ESResultSet rs = new ESResultSet(head, (int)total, rowLength);
-		rs.setOffset((int)offset);
+		
+		ESResultSet rs;
+		if(previous != null){
+			rs = previous;
+		}else{
+			rs = new ESResultSet(head, (int)total, rowLength);
+			rs.setOffset((int)offset);
+		}
 		for(SearchHit hit : hits){
 			this.parse(hit.getSource(), hit, rs, useLateral, "", headMap);
 		}
@@ -57,7 +63,7 @@ public class SearchHitParser {
 					//col.setVisible(false);
 				}
 			}
-			for(Column col : tmpCols) rs.getHeading().remove(col);
+			for(Column col : tmpCols) col.setVisible(false);//rs.getHeading().remove(col); 
 		}else{
 			for(Column col : rs.getHeading().columns())
 				if(col.getColumn().contains(".") ) col.setVisible(false);

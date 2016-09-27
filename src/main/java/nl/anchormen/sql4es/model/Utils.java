@@ -39,6 +39,7 @@ public class Utils {
 	public static final String PROP_TABLE_COLUMN_MAP = "table.column.info.map";
 	public static final String PROP_FRAGMENT_SIZE = "fragment.size";
 	public static final String PROP_FRAGMENT_NUMBER = "fragment.number";
+	public static final String PROP_RESULTS_SPLIT = "results.split";
 	
 	public static String getLoggingInfo(){
 		StackTraceElement element = Thread.currentThread().getStackTrace()[2];
@@ -90,6 +91,7 @@ public class Utils {
 	 */
 	public static boolean getBooleanProp(Properties props, String name, boolean def){
 		if(!props.containsKey(name)) return def;
+		if(props.get(name).toString().length() < 3) return true;
 		try {
 			return Boolean.parseBoolean( props.getProperty(name) );
 		} catch (Exception e) {
